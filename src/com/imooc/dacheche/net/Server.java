@@ -128,6 +128,15 @@ public class Server {
 	public synchronized RequestMessage[] listReqMsgs() {
 		return rms.toArray(new RequestMessage[rms.size()]);
 	}
+	
+	/**
+	 * 获取一个订单消息
+	 * @return
+	 */
+	public synchronized RequestMessage getReqMsg() {
+		return rms.get(0);
+	}
+	
 	/**
 	 * 根据id获取对应客户端对象,可以实现消息发送
 	 * @param id

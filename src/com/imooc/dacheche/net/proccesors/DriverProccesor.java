@@ -102,9 +102,10 @@ public class DriverProccesor implements MessagePoccesor {
 	 * @param msg
 	 */
 	private void getOrder(ClientMessage msg) {
-		RequestMessage[] rms = Server.getServer().listReqMsgs();
+		//RequestMessage[] rms = Server.getServer().listReqMsgs();
+		RequestMessage rm = Server.getServer().getReqMsg();
 		ServerMessage sm = new ServerMessage();
-		sm.setObjMsg(rms);
+		sm.setObjMsg(rm);
 		sm.setState(2201);
 		mt.sendMessage(sm);
 	}
