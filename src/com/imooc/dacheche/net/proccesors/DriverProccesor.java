@@ -9,6 +9,7 @@ import com.imooc.dacheche.bean.RequestMessage;
 import com.imooc.dacheche.bean.ServerMessage;
 import com.imooc.dacheche.bean.User;
 import com.imooc.dacheche.common.OutUtils;
+import com.imooc.dacheche.common.Utils;
 import com.imooc.dacheche.dao.LogDao;
 import com.imooc.dacheche.net.MessagePoccesor;
 import com.imooc.dacheche.net.MessageTransfer;
@@ -79,14 +80,20 @@ public class DriverProccesor implements MessagePoccesor {
 		String id = msg.getMessage();
 		RequestMessage rm = Server.getServer().getReqMsg(id);
 		if(rm != null) {
-			MessageTransfer mp = Server.getServer().getMt(rm.getUser().getId());
-			
-			// 构造消息通过消息处理对象发送到对应的乘客
-			ServerMessage sm = new ServerMessage();
-			sm.setDriver(mt.getUser());
-			sm.setState(ServerMessage.DRIVER_REQUEST);
-			
-			mp.sendMessage(sm);
+			// 如果正在等待乘客回应其他司机,则等100毫秒之后在做请求
+			if(!rm.isProccesing()) {
+				MessageTransfer mp = Server.getServer().getMt(rm.getUser().getId());
+				
+				// 构造消息通过消息处理对象发送到对应的乘客
+				ServerMessage sm = new ServerMessage();
+				sm.setDriver(mt.getUser());
+				sm.setState(ServerMessage.DRIVER_REQUEST);
+				rm.setProccesing(true);
+				mp.sendMessage(sm);
+			} else {
+				Utils.sleep(100);
+				requestPassenger(msg);
+			}
 		} else {
 			// 返回没找到当前消息
 			ServerMessage sm = new ServerMessage();
@@ -106,7 +113,7 @@ public class DriverProccesor implements MessagePoccesor {
 		RequestMessage rm = Server.getServer().getReqMsg();
 		ServerMessage sm = new ServerMessage();
 		sm.setObjMsg(rm);
-		sm.setState(2201);
+		sm.setState(ServerMessage.ORDER_LIST);
 		mt.sendMessage(sm);
 	}
 

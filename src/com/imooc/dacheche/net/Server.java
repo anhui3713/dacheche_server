@@ -134,7 +134,11 @@ public class Server {
 	 * @return
 	 */
 	public synchronized RequestMessage getReqMsg() {
-		return rms.get(0);
+		if(rms != null && rms.size() > 0) {
+			return rms.get(0);
+		}
+		
+		return null;
 	}
 	
 	/**

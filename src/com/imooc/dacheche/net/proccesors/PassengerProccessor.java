@@ -88,6 +88,7 @@ public class PassengerProccessor implements MessagePoccesor {
 	 */
 	private void passengerConfig(ClientMessage msg) {
 		User driver = msg.getReceiver();
+		// 对应司机的线程处理对象
 		MessageTransfer tmt = Server.getServer().getMt(driver.getId());
 		
 		ServerMessage sm = new ServerMessage();
@@ -98,6 +99,10 @@ public class PassengerProccessor implements MessagePoccesor {
 		// 如果乘客接受搭乘该司机的车,则将搭乘列表中的该消息删除
 		if(msg.getCommand() == ClientMessage.ACCEPT) {
 			Server.getServer().removeReqMsg(mt.getUser().getId());
+		} 
+		// 如果拒绝则设置处理状态为未处理,其他司机可以继续抢单
+		else {
+			Server.getServer().getReqMsg(mt.getUser().getId()).setProccesing(false);
 		}
 		
 		tmt.sendMessage(sm);

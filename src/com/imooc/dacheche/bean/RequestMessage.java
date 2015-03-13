@@ -28,6 +28,16 @@ public class RequestMessage implements Serializable {
 	 */
 	private Date requestTime;
 	
+	private boolean proccesing = false;
+	
+	public void setProccesing(boolean proccesing) {
+		this.proccesing = proccesing;
+	}
+	
+	public boolean isProccesing() {
+		return proccesing;
+	}
+	
 	public User getUser() {
 		return user;
 	}
