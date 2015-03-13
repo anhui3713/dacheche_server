@@ -28,7 +28,7 @@ public class DriverProccesor implements MessagePoccesor {
 	public void proccess(ClientMessage msg) {
 		switch(msg.getCommand()) {
 			 // 司机请求载客
-//			 case ClientMessage.GET_ORDER: requestList(msg); break;
+			 case ClientMessage.GET_ORDER: getOrder(msg); break;
 			 // 司机获取历史消息
 			 case ClientMessage.GET_HISTORY: requestHistory(msg); break;
 			 // 司机请求搭载指定乘客
@@ -37,7 +37,7 @@ public class DriverProccesor implements MessagePoccesor {
 			 case ClientMessage.REQUEST_DONE: confirmDone(msg); break;
 		}
 	}
-	
+
 	/**
 	 * 司机请求查看载客历史记录
 	 * @param msg
@@ -101,12 +101,12 @@ public class DriverProccesor implements MessagePoccesor {
 	 * 司机请求载客
 	 * @param msg
 	 */
-//	private void requestList(ClientMessage msg) {
-//		RequestMessage[] rms = Server.getServer().listReqMsgs();
-//		ServerMessage sm = new ServerMessage();
-//		sm.setObjMsg(rms);
-//		sm.setState(2201);
-//		mt.sendMessage(sm);
-//	}
+	private void getOrder(ClientMessage msg) {
+		RequestMessage[] rms = Server.getServer().listReqMsgs();
+		ServerMessage sm = new ServerMessage();
+		sm.setObjMsg(rms);
+		sm.setState(2201);
+		mt.sendMessage(sm);
+	}
 
 }
